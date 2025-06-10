@@ -1,0 +1,97 @@
+﻿@model IEnumerable<VolunteerManagementSystem.Models.Volunteer>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary"> <i class="fa fa-plus"></i>   Add New Volunteer</a>
+</p>
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">Volunteers List</h3>
+    </div>
+
+    <div class="card-body">
+        <table id="example1" class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.firstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.middleName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.lastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.phoneNumber)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.address)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.volunteerType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.volunteerSkills)
+                </th>
+                <th>
+                    Edit
+                </th>
+                <th>
+                    View
+                </th>
+                <th>
+                    Delete
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.firstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.middleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.lastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.phoneNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.volunteerType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.volunteerSkills)
+                </td>
+                <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"> <i class="fa fa-pen-to-square"></i>  Edit</a>
+                </td>
+
+                 <td>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-warning"> <i class="fa fa-eye"></i>  View</a>
+                </td>
+
+                <td>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"> <i class="fa fa-trash"></i>  Delete</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+    </div>
+</div>

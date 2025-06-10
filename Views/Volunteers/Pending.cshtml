@@ -1,0 +1,36 @@
+﻿@model IEnumerable<VolunteerManagementSystem.Models.Volunteer>
+
+@{
+    ViewData["Title"] = "Pending Applications";
+}
+
+<h2>Pending Volunteer Applications</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var volunteer in Model)
+        {
+            <tr>
+                <td>@volunteer.firstName @volunteer.lastName</td>
+                <td>@volunteer.email</td>
+                <td>@volunteer.phoneNumber</td>
+                <td>
+                    <form asp-action="Approve" method="post" asp-route-id="@volunteer.Id" style="display:inline;">
+                        <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                    </form>
+                    <form asp-action="Reject" method="post" asp-route-id="@volunteer.Id" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

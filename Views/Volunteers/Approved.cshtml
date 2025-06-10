@@ -1,0 +1,25 @@
+﻿@model IEnumerable<VolunteerManagementSystem.Models.Volunteer>
+@{
+    ViewData["Title"] = "Approved Volunteers";
+}
+
+<h2>Approved Volunteers</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var v in Model)
+        {
+            <tr>
+                <td>@v.firstName @v.lastName</td>
+                <td>@v.email</td>
+                <td>@v.phoneNumber</td>
+            </tr>
+        }
+    </tbody>
+</table>

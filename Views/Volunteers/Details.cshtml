@@ -1,0 +1,90 @@
+﻿@model VolunteerManagementSystem.Models.Volunteer
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Volunteer</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.firstName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.firstName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.middleName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.middleName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.lastName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.lastName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.phoneNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.phoneNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.email)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.address)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.address)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.volunteerType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.volunteerType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.volunteerSkills)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.volunteerSkills)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.createdById)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.createdById)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.createdOn)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.createdOn)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.modifiedById)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.modifiedById)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.modifiedOn)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.modifiedOn)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

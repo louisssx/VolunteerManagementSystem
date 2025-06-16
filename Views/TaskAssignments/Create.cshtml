@@ -1,0 +1,44 @@
+@model VolunteerManagementSystem.Models.TaskAssignment
+@{
+    ViewData["Title"] = "Assign Task";
+}
+
+<h1>Assign Task</h1>
+@if (TempData["AssignmentError"] != null)
+{
+    <div class="alert alert-danger">@TempData["AssignmentError"]</div>
+}
+@if (ViewBag.NoAvailableIncidents == true)
+{
+    <div class="alert alert-warning">No available incidents for assignment at this time. Please wait until an incident is unassigned or a task is completed.</div>
+}
+else if (ViewBag.NoAvailableVolunteers == true)
+{
+    <div class="alert alert-warning">No available volunteers for assignment at this time. Please wait until a volunteer completes their current task.</div>
+}
+else
+{
+    <form asp-action="Create">
+        <div class="form-group">
+            <label asp-for="IncidentReportId" class="control-label"></label>
+            <select asp-for="IncidentReportId" class="form-control" asp-items="@(new SelectList(ViewBag.IncidentReports, "Id", "Title"))"></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="VolunteerId" class="control-label"></label>
+            <select asp-for="VolunteerId" class="form-control" asp-items="@(new SelectList(ViewBag.Volunteers, "Id", "firstName"))"></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="TaskDescription" class="control-label"></label>
+            <input asp-for="TaskDescription" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Status" class="control-label"></label>
+            <input asp-for="Status" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="AssignedDate" class="control-label"></label>
+            <input asp-for="AssignedDate" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Assign</button>
+    </form>
+} 

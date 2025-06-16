@@ -1,0 +1,117 @@
+﻿@model VolunteerManagementSystem.Models.IncidentReport
+
+@{
+    ViewData["Title"] = "Create Incident Report";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-lg-6">
+            <div class="card shadow" style="border-radius: 18px;">
+                <div class="card-header text-white text-center" style="background: linear-gradient(90deg, #5b86e5 0%, #36d1c4 100%); border-top-left-radius: 18px; border-top-right-radius: 18px;">
+                    <h3 class="mb-0" style="font-weight: 700; letter-spacing: 1px;">Create Incident Report</h3>
+                </div>
+                <div class="card-body p-4" style="background: #f8fafc; border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;">
+                    <form asp-action="Create">
+                        @Html.AntiForgeryToken()
+                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ErrorCount > 0)
+                        {
+                            <div asp-validation-summary="All" class="alert alert-danger"></div>
+                        }
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label asp-for="Title" class="form-label">Title</label>
+                                <input asp-for="Title" class="form-control form-control-lg" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-12">
+                                <label asp-for="Type" class="form-label">Volunteer Needed</label>
+                                <select asp-for="Type" class="form-select form-select-lg">
+                                    <option value="">Select Type</option>
+                                    <option value="Medical">Medical</option>
+                                    <option value="Logistics">Logistics</option>
+                                    <option value="Environmental">Environmental</option>
+                                    <option value="Community Support">Community Support</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <span asp-validation-for="Type" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-12">
+                                <label asp-for="Description" class="form-label">Description</label>
+                                <textarea asp-for="Description" class="form-control form-control-lg" rows="5" style="min-height: 120px;"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn mt-4 w-100" style="background: linear-gradient(90deg, #5b86e5 0%, #36d1c4 100%); color: white; font-weight: 600; font-size: 1.2rem; border: none; border-radius: 8px; box-shadow: 0 2px 8px rgba(91,134,229,0.10);">
+                            <i class="fa fa-plus-circle me-1"></i> Create Report
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal: Volunteer Assigned -->
+@if (TempData["AssignedVolunteerName"] != null)
+{
+    <div class="modal fade" id="successModalAssigned" tabindex="-1" aria-labelledby="successModalAssignedLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="successModalAssignedLabel">Incident Report Created</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <i class="fa fa-check-circle fa-3x mb-3 text-success"></i>
+            <p>Your incident report has been submitted successfully.</p>
+            <p><strong>Volunteer Assigned:</strong> @TempData["AssignedVolunteerName"]</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-success" onclick="window.location.href='/'">Back to Home</button>
+          </div>
+        </div>
+      </div>
+    </div>
+}
+<!-- Success Modal: No Volunteer Available -->
+@if (TempData["NoVolunteerType"] != null)
+{
+    <div class="modal fade" id="successModalNoVolunteer" tabindex="-1" aria-labelledby="successModalNoVolunteerLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-warning text-dark">
+            <h5 class="modal-title" id="successModalNoVolunteerLabel">Incident Report Created</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            <i class="fa fa-exclamation-circle fa-3x mb-3 text-warning"></i>
+            <p>Your incident report has been submitted successfully.</p>
+            <p>No available volunteer of type '<strong>@TempData["NoVolunteerType"]</strong>' at the moment. The incident will be assigned once a volunteer becomes available.</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="window.location.href='/'">Back to Home</button>
+          </div>
+        </div>
+      </div>
+    </div>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.location.hash === '#success') {
+                var assignedModal = document.getElementById('successModalAssigned');
+                var noVolunteerModal = document.getElementById('successModalNoVolunteer');
+                if (assignedModal) {
+                    var modal = new bootstrap.Modal(assignedModal);
+                    modal.show();
+                } else if (noVolunteerModal) {
+                    var modal = new bootstrap.Modal(noVolunteerModal);
+                    modal.show();
+                }
+            }
+        });
+    </script>
+}

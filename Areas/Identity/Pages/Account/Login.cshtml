@@ -1,0 +1,61 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+    var registered = HttpContext.Request.Query["registered"].ToString();
+}
+@if (!string.IsNullOrEmpty(registered) && registered == "true")
+{
+    <div class="alert alert-success text-center" role="alert">
+        Registration successful! Please log in with your new admin account.
+    </div>
+}
+@if (TempData["LogoutMessage"] != null)
+{
+    <div class="toast show position-fixed top-0 end-0 m-4" style="z-index: 9999;">
+        <div class="toast-header bg-success text-white">
+            <strong class="me-auto">Success</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body">
+            @TempData["LogoutMessage"]
+        </div>
+    </div>
+    <script>
+        setTimeout(function() {
+            var toastEl = document.querySelector('.toast');
+            if (toastEl) {
+                var toast = new bootstrap.Toast(toastEl);
+                toast.show();
+            }
+        }, 100);
+    </script>
+}
+
+<h2 class="text-center mb-2" style="font-weight:700; color:#444; font-size:2.2rem;">Admin Login</h2>
+<p class="text-center mb-4" style="color:#444; font-size:1.1rem;">Sign in to continue</p>
+<form id="account" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+    <div class="mb-3">
+        <label asp-for="Input.Email" class="form-label" style="font-weight:500; letter-spacing:1px;">EMAIL</label>
+        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="pup.edu.ph@gmail.com" style="border-radius: 2rem; padding-left:1.2rem;" />
+        <span asp-validation-for="Input.Email" class="text-danger"></span>
+    </div>
+    <div class="mb-4">
+        <label asp-for="Input.Password" class="form-label" style="font-weight:500; letter-spacing:1px;">PASSWORD</label>
+        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="********" style="border-radius: 2rem; padding-left:1.2rem;" />
+        <span asp-validation-for="Input.Password" class="text-danger"></span>
+    </div>
+    <button id="login-submit" type="submit" class="w-100 btn btn-lg" style="background: linear-gradient(90deg,#36d1c4 0%, #5b86e5 100%); color:#222; font-weight:700; border-radius:2rem; box-shadow:0 2px 8px rgba(54,209,196,0.10);">Login</button>
+    <div class="mt-4 text-center" style="font-size:0.95rem; color:#888;">
+        <a id="forgot-password" asp-page="./ForgotPassword" style="color:#5b86e5; text-decoration:none;">FORGOT PASSWORD?</a>
+    </div>
+    <div class="mt-2 text-center" style="font-size:0.95rem; color:#888;">
+        <a href="/Identity/Account/RegisterAdmin" style="color:#36d1c4; text-decoration:none; font-weight:600;">Register as Admin</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

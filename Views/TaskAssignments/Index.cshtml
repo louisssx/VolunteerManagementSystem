@@ -1,0 +1,133 @@
+@model IEnumerable<VolunteerManagementSystem.Models.TaskAssignment>
+
+@{
+    ViewData["Title"] = "Task Assignments";
+    var filter = Context.Request.Query["statusFilter"].ToString();
+    if (string.IsNullOrEmpty(filter)) { filter = "All"; }
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between mb-3">
+        <a asp-action="Done" class="btn btn-success">
+            <i class="fa fa-check me-1"></i>View Completed Tasks
+        </a>
+    </div>
+    <div class="card shadow" style="border-radius: 18px;">
+        <div class="card-header text-white" style="background: linear-gradient(90deg, #5b86e5 0%, #36d1c4 100%); border-top-left-radius: 18px; border-top-right-radius: 18px;">
+            <h3 class="mb-0">Task Assignments</h3>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0" style="border-radius: 12px; overflow: hidden;">
+                <thead style="background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%); color: white;">
+                    <tr>
+                        <th class="text-center">Incident Report</th>
+                        <th>Volunteer</th>
+                        <th>Task Description</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Assigned Date</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @{
+                    IEnumerable<VolunteerManagementSystem.Models.TaskAssignment> filteredModel = Model.Where(t => t.Status != "Done");
+                    if (filter == "Pending")
+                    {
+                        filteredModel = filteredModel.Where(t => t.Status == "Pending" || t.Status == "Not Started");
+                    }
+                }
+                @foreach (var item in filteredModel) {
+                    <tr style="background: rgba(54,209,196,0.04);">
+                        <td class="text-center">@item.IncidentReport?.Title</td>
+                        <td>@item.Volunteer?.firstName @item.Volunteer?.lastName</td>
+                        <td>@item.TaskDescription</td>
+                        <td class="text-center">
+                            @if (item.Status == "Pending") {
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            } else if (item.Status == "Not Started") {
+                                <span class="badge bg-secondary">Not Started</span>
+                            } else if (item.Status == "Done") {
+                                <span class="badge bg-success">Done</span>
+                            } else {
+                                <span class="badge bg-light text-dark">@item.Status</span>
+                            }
+                        </td>
+                        <td class="text-center">@item.AssignedDate.ToShortDateString()</td>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-2">
+                                <button type="button" class="btn btn-gradient-primary btn-sm" style="background: linear-gradient(135deg, #36d1c4 0%, #5b86e5 100%); color: white; border: none; font-weight:600; border-radius:8px;" data-bs-toggle="modal" data-bs-target="#editModal-@item.Id">
+                                    <i class="fa fa-edit me-1"></i>Edit
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm" style="font-weight:600; border-radius:8px;" data-bs-toggle="modal" data-bs-target="#deleteModal-@item.Id">
+                                    <i class="fa fa-trash me-1"></i>Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Move all modals here, after the table -->
+@foreach (var item in filteredModel) {
+    <div class="modal fade" id="editModal-@item.Id" tabindex="-1" aria-labelledby="editModalLabel-@item.Id" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white" style="background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%);">
+                    <h5 class="modal-title" id="editModalLabel-@item.Id">Edit Task Assignment Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form asp-action="UpdateStatus" asp-route-id="@item.Id" method="post">
+                    <div class="modal-body">
+                        <div class="mb-2">
+                            <label class="form-label">Incident Report</label>
+                            <input type="text" class="form-control" value="@item.IncidentReport?.Title" readonly />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Volunteer</label>
+                            <input type="text" class="form-control" value="@item.Volunteer?.firstName @item.Volunteer?.lastName" readonly />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Task Description</label>
+                            <input type="text" class="form-control" value="@item.TaskDescription" readonly />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Assigned Date</label>
+                            <input type="text" class="form-control" value="@item.AssignedDate.ToShortDateString()" readonly />
+                        </div>
+                        <div class="mb-2">
+                            <label class="form-label">Status</label>
+                            <select name="status" class="form-select">
+                                @{
+                                    var statuses = new[] { "Pending", "Not Started", "Done" };
+                                }
+                                @foreach (var status in statuses)
+                                {
+                                    <option value="@status" selected="@(item.Status == status ? "selected" : null)">@status</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="font-weight:600; border-radius:8px;">Cancel</button>
+                        <button type="submit" class="btn btn-success" style="font-weight:600; border-radius:8px;">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        function showStatusDropdown(id) {
+            document.getElementById('statusForm-' + id).classList.remove('d-none');
+        }
+        function hideStatusDropdown(id) {
+            document.getElementById('statusForm-' + id).classList.add('d-none');
+        }
+    </script>
+} 

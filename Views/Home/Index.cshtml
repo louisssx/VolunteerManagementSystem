@@ -1,66 +1,74 @@
 ﻿@{
-    ViewData["Title"] = "Volunteers";
-}                  
-<!-- Small boxes (Stat box) -->
-<div class="row">
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-info">
-            <div class="inner">
-                <h3>150</h3>
+    ViewData["Title"] = "Home";
+}
 
-                <p>New Orders</p>
+<div class="container py-4">
+    <!-- Hero Section -->
+    <div class="row align-items-center mb-5">
+        <div class="col-md-12">
+            <div class="welcome-box d-flex align-items-center" style="background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%); color: white; padding: 2.5rem 2rem; border-radius: 24px; margin-bottom: 0; box-shadow: 0 4px 24px rgba(54,209,196,0.10);">
+                <img src="/img/logo.png" alt="ResponSync Logo" style="max-width: 120px; margin-right: 2rem; border-radius: 12px; box-shadow: 0 4px 24px rgba(91,134,229,0.10);" />
+                <div>
+                    <h1 style="font-weight: 800; letter-spacing: 1.5px; font-size: 2.5rem;">Welcome to ResponSync</h1>
+                    <p style="font-size: 1.25rem; margin-bottom: 1.5rem;">Empowering communities through efficient volunteer coordination.<br/>Manage volunteers, track incident reports, and streamline your organization's response efforts.</p>
+                </div>
             </div>
-            <div class="icon">
-                <i class="ion ion-bag"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-success">
-            <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
 
-                <p>Bounce Rate</p>
+    <!-- Feature Cards -->
+    <div class="row justify-content-center g-4 mb-2">
+        <div class="col-12 col-md-4 d-flex">
+            <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="background: linear-gradient(135deg, #36d1c4 0%, #5b86e5 100%); border-radius: 20px; padding: 2rem; color: white; box-shadow: 0 2px 12px rgba(54,209,196,0.10);">
+                <i class="fa fa-users fa-3x mb-3"></i>
+                <h3 style="font-weight: 700;">Volunteers</h3>
+                <p>View and manage all volunteers in your organization.</p>
+                <a asp-controller="Volunteers" asp-action="Index" class="btn btn-light mt-2" style="color: #36d1c4; font-weight: 700; border-radius: 8px;">Go to Volunteers</a>
             </div>
-            <div class="icon">
-                <i class="ion ion-stats-bars"></i>
+        </div>
+        <div class="col-12 col-md-4 d-flex">
+            <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="background: linear-gradient(135deg, #5b86e5 0%, #36d1c4 100%); border-radius: 20px; padding: 2rem; color: white; box-shadow: 0 2px 12px rgba(91,134,229,0.10);">
+                <i class="fa fa-clipboard-list fa-3x mb-3"></i>
+                <h3 style="font-weight: 700;">Incident Reports</h3>
+                <p>Track and manage all incident reports efficiently.</p>
+                <a asp-controller="IncidentReports" asp-action="Index" class="btn btn-light mt-2" style="color: #5b86e5; font-weight: 700; border-radius: 8px;">Go to Reports</a>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+        <div class="col-12 col-md-4 d-flex">
+            <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="background: linear-gradient(135deg, #36d1c4 0%, #5b86e5 100%); border-radius: 20px; padding: 2rem; color: white; box-shadow: 0 2px 12px rgba(54,209,196,0.10);">
+                <i class="fa fa-chart-bar fa-3x mb-3"></i>
+                <h3 style="font-weight: 700;">Dashboard</h3>
+                <p>See live stats and monitor your organization's activity.</p>
+                <a asp-controller="Home" asp-action="Dashboard" class="btn btn-light mt-2" style="color: #36d1c4; font-weight: 700; border-radius: 8px;">Go to Dashboard</a>
+            </div>
         </div>
     </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-warning">
-            <div class="inner">
-                <h3>44</h3>
 
-                <p>User Registrations</p>
+    <!-- Quick Actions -->
+    <div class="row justify-content-center g-4 mt-2">
+        <div class="col-12 col-md-4 d-flex">
+            <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="background: linear-gradient(135deg, #36d1c4 0%, #5b86e5 100%); border-radius: 20px; padding: 2rem; color: white; box-shadow: 0 2px 12px rgba(54,209,196,0.10);">
+                <i class="fa fa-user-plus fa-2x mb-2"></i>
+                <h4 style="font-weight: 700;">Add Volunteer</h4>
+                <p>Become a part of our mission. Sign up as a volunteer now!</p>
+                <a asp-controller="Volunteers" asp-action="Register" class="btn btn-light mt-2" style="color: #36d1c4; font-weight: 700; border-radius: 8px;">
+                    <i class="fa fa-user-plus me-1"></i>Add
+                </a>
             </div>
-            <div class="icon">
-                <i class="ion ion-person-add"></i>
+        </div>
+        <div class="col-12 col-md-4 d-flex">
+            <div class="w-100 h-100 d-flex flex-column align-items-center justify-content-center" style="background: linear-gradient(135deg, #5b86e5 0%, #36d1c4 100%); border-radius: 20px; padding: 2rem; color: white; box-shadow: 0 2px 12px rgba(91,134,229,0.10);">
+                <i class="fa fa-plus-circle fa-2x mb-2"></i>
+                <h4 style="font-weight: 700;">Create Incident Report</h4>
+                <p>Report an incident quickly and help us respond efficiently.</p>
+                <a asp-controller="IncidentReports" asp-action="Create" class="btn btn-light mt-2" style="color: #5b86e5; font-weight: 700; border-radius: 8px;">
+                    <i class="fa fa-plus-circle me-1"></i>Create Report
+                </a>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
         </div>
     </div>
-    <!-- ./col -->
-    <div class="col-lg-3 col-6">
-        <!-- small box -->
-        <div class="small-box bg-danger">
-            <div class="inner">
-                <h3>65</h3>
-
-                <p>Unique Visitors</p>
-            </div>
-            <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-        </div>
-    </div>
-    <!-- ./col -->
 </div>
+
+@* Home page intentionally left blank. Use Dashboard for main content. *@
+
+

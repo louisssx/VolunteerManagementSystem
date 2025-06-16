@@ -1,97 +1,107 @@
 ﻿@model IEnumerable<VolunteerManagementSystem.Models.Volunteer>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Volunteers";
 }
 
-<p>
-    <a asp-action="Create" class="btn btn-primary"> <i class="fa fa-plus"></i>   Add New Volunteer</a>
-</p>
-<div class="card">
-    <div class="card-header">
-        <h3 class="card-title">Volunteers List</h3>
-    </div>
-
-    <div class="card-body">
-        <table id="example1" class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.firstName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.middleName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.lastName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.phoneNumber)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.email)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.address)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.volunteerType)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.volunteerSkills)
-                </th>
-                <th>
-                    Edit
-                </th>
-                <th>
-                    View
-                </th>
-                <th>
-                    Delete
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.firstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.middleName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.lastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.phoneNumber)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.volunteerType)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.volunteerSkills)
-                </td>
-                <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary"> <i class="fa fa-pen-to-square"></i>  Edit</a>
-                </td>
-
-                 <td>
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-warning"> <i class="fa fa-eye"></i>  View</a>
-                </td>
-
-                <td>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger"> <i class="fa fa-trash"></i>  Delete</a>
-                </td>
-            </tr>
-    }
-        </tbody>
-    </table>
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header text-white" style="background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%);">
+            <h3>Volunteers</h3>
+        </div>
+        <div class="card-body">
+            <table id="volunteerTable" class="table table-hover table-bordered align-middle" style="border-radius: 16px; overflow: hidden;">
+                <thead style="background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%); color: white;">
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th class="text-center">Type</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var v in Model) {
+                    <tr style="background: rgba(54,209,196,0.04);">
+                        <td>@v.firstName @v.middleName @v.lastName</td>
+                        <td>@v.email</td>
+                        <td>@v.phoneNumber</td>
+                        <td class="text-center">@v.volunteerType</td>
+                        <td class="text-center">
+                            @if (v.IsApproved) {
+                                <span class="badge bg-success">Approved</span>
+                            } else {
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            }
+                        </td>
+                        <td class="text-center">
+                            <a asp-action="Edit" asp-route-id="@v.Id" class="btn btn-gradient-primary btn-sm me-1" style="background: linear-gradient(135deg, #36d1c4 0%, #5b86e5 100%); color: white; border: none;">
+                                <i class="fa fa-pen-to-square me-1"></i>Edit
+                            </a>
+                            <a asp-action="Details" asp-route-id="@v.Id" class="btn btn-gradient-warning btn-sm me-1" style="background: linear-gradient(135deg, #5b86e5 0%, #36d1c4 100%); color: white; border: none;">
+                                <i class="fa fa-eye me-1"></i>View
+                            </a>
+                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-id="@v.Id">
+                                <i class="fa fa-trash me-1"></i>Delete
+                            </button>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 18px;">
+            <div class="modal-header text-white" style="background: linear-gradient(90deg, #ff5858 0%, #f09819 100%); border-top-left-radius: 18px; border-top-right-radius: 18px;">
+                <h5 class="modal-title" id="confirmDeleteLabel" style="font-weight: 700;"><i class="fa fa-exclamation-triangle me-2"></i>Delete Volunteer</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="background: #f8fafc;">
+                <div class="alert alert-danger text-center mb-3" style="font-size: 1.05rem;">
+                    <i class="fa fa-exclamation-circle me-2"></i>
+                    Are you sure you want to <strong>delete</strong> this volunteer?
+                </div>
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Name</dt>
+                    <dd class="col-sm-8" id="volunteerName">-</dd>
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8" id="volunteerEmail">-</dd>
+                    <dt class="col-sm-4">Type</dt>
+                    <dd class="col-sm-8" id="volunteerType">-</dd>
+                </dl>
+            </div>
+            <div class="modal-footer" style="background: #f8fafc; border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;">
+                <form id="deleteForm" method="post">
+                    <input type="hidden" name="id" id="deleteId" />
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="font-weight: 600; border-radius: 8px;">Cancel</button>
+                    <button type="submit" class="btn btn-danger" style="font-weight: 600; border-radius: 8px;"><i class="fa fa-trash me-1"></i>Yes, Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts Section -->
+@section Scripts {
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap Bundle (for modal) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- DataTables & Export Buttons -->
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+}

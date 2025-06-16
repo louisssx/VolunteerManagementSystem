@@ -1,0 +1,61 @@
+﻿@model IEnumerable<VolunteerManagementSystem.Models.IncidentReport>
+
+@{
+    ViewData["Title"] = "Incident Reports";
+}
+
+<div class="container mt-4">
+    <div class="card shadow" style="border-radius: 18px;">
+        <div class="card-header text-white" style="background: linear-gradient(90deg, #5b86e5 0%, #36d1c4 100%); border-top-left-radius: 18px; border-top-right-radius: 18px;">
+            <h3 class="mb-0" style="font-weight: 700; letter-spacing: 1px;">Incident Reports</h3>
+        </div>
+        <div class="card-body" style="background: #f8fafc; border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;">
+            <div class="table-responsive">
+                <table class="table align-middle" style="border-radius: 12px; overflow: hidden; background: white;">
+                    <thead style="background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%); color: white;">
+                        <tr>
+                            <th class="text-center">Title</th>
+                            <th>Description</th>
+                            <th class="text-center" style="white-space: nowrap;">Date Reported</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var r in Model) {
+                        <tr style="background: rgba(54,209,196,0.04);">
+                            <td class ="text-center">@r.Title</td>
+                            <td>@r.Description</td>
+                            <td class="text-center" style="white-space: nowrap;">@r.DateReported.ToShortDateString()</td>
+                            <td class="text-center">
+                                @if (r.Status == "Pending") {
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                } else if (r.Status == "Not Started") {
+                                    <span class="badge bg-secondary">Not Started</span>
+                                } else if (r.Status == "Done") {
+                                    <span class="badge bg-success">Done</span>
+                                } else {
+                                    <span class="badge bg-light text-dark">@r.Status</span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a asp-action="Details" asp-route-id="@r.Id" class="btn btn-gradient-warning btn-sm" style="background: linear-gradient(135deg, #5b86e5 0%, #36d1c4 100%); color: white; border: none;">
+                                        <i class="fa fa-eye me-1"></i>Details
+                                    </a>
+                                    <a asp-action="Edit" asp-route-id="@r.Id" class="btn btn-gradient-primary btn-sm" style="background: linear-gradient(135deg, #36d1c4 0%, #5b86e5 100%); color: white; border: none;">
+                                        <i class="fa fa-pen-to-square me-1"></i>Edit
+                                    </a>
+                                    <a asp-action="Delete" asp-route-id="@r.Id" class="btn btn-danger btn-sm">
+                                        <i class="fa fa-trash me-1"></i>Delete
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

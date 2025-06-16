@@ -1,344 +1,254 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <title>ResponSync - Volunteer Management</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Volunteers Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
 
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="~/AdminLTE/plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet" href="~/AdminLTE/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="~/AdminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-    <link rel="stylesheet" href="~/AdminLTE/plugins/jqvmap/jqvmap.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="~/AdminLTE/dist/css/adminlte.min.css">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="~/AdminLTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="~/AdminLTE/plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-    <link rel="stylesheet" href="~/AdminLTE/plugins/summernote/summernote-bs4.min.css">
-    <!-- DataTables -->
-    <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" href="~/AdminLTE/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-    <!-- Theme style -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --lavender: #CCABD8;
+            --purple: #8474A1;
+            --sky: #6EC6CA;
+            --teal: #08979D;
+            --deep-teal: #055B5C;
+        }
+
+        body {
+            background: white;
+            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+            color: #333;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(to left, var(--sky), var(--teal));
+            color: white;
+        }
+
+            .sidebar h5 {
+                font-size: 1.4rem;
+                color: #333;
+            }
+
+            .sidebar a {
+                color: #e1e6ef;
+                text-decoration: none;
+                transition: 0.3s ease-in-out;
+                font-weight: 500;
+            }
+
+                .sidebar a:hover,
+                .sidebar .nav-link.active {
+                    background-color: var(--deep-teal);
+                    color: white;
+                    border-radius: 0.5rem;
+                    padding-left: 0.75rem;
+                }
+
+        /* Dropdown styles */
+        .sidebar .dropdown-menu {
+            background: var(--deep-teal);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+            position: static;
+            float: none;
+            box-shadow: none;
+            width: 100%;
+        }
+
+        .sidebar .dropdown-item {
+            color: #e1e6ef;
+            padding: 0.5rem 1rem;
+            border-radius: 0.3rem;
+            margin-left: 0;
+            font-size: 0.97em;
+        }
+
+        .sidebar .dropdown-item:hover,
+        .sidebar .dropdown-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .sidebar .dropdown-toggle::after {
+            display: inline-block;
+            margin-left: 0.1rem;
+            vertical-align: middle;
+            content: "";
+            border-top: 0.3em solid;
+            border-right: 0.3em solid transparent;
+            border-bottom: 0;
+            border-left: 0.3em solid transparent;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(to right, var(--sky), var(--teal));
+            color: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+            .dashboard-header h2 {
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+            }
+
+        .card-custom {
+            background: linear-gradient(135deg, var(--sky), var(--teal));
+            color: white;
+            border: none;
+            border-radius: 1rem;
+            transition: transform 0.2s;
+        }
+
+            .card-custom:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            }
+
+        .btn-outline-primary {
+            border-color: azure;
+            color: azure;
+        }
+
+            .btn-outline-primary:hover {
+                background-color: white;
+                color: white;
+            }
+
+        footer.main-footer {
+            white-space: nowrap;
+            flex-wrap: nowrap;
+        }
+
+    </style>
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
-    <div class="wrapper">
-
-        <!-- Preloader -->
-        <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="~/AdminLTE/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-        </div>
-
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
-                </li>
-            </ul>
-
-            <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">
-                <!-- Navbar Search -->
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                        <i class="fas fa-search"></i>
-                    </a>
-                    <div class="navbar-search-block">
-                        <form class="form-inline">
-                            <div class="input-group input-group-sm">
-                                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                                <div class="input-group-append">
-                                    <button class="btn btn-navbar" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                        <i class="fas fa-times"></i>
-                                    </button>
+<body>
+    <div class="d-flex flex-column min-vh-100">
+        <!-- Main Wrapper -->
+        <div class="container-fluid flex-grow-1">
+            <div class="row">
+                <!-- Sidebar -->
+                <nav class="col-md-2 sidebar d-flex flex-column py-4 px-3">
+                    <div>
+                        <div class="d-flex align-items-center justify-content-center mb-4" style="gap: 0.75rem;">
+                            <img src="/img/darklogo.png" alt="ResponSync Logo" style="height: 48px; width: 48px; object-fit: contain;" />
+                            <h5 class="fw-bold mb-0">ResponSync</h5>
+                        </div>
+                        <ul class="nav flex-column">
+                            <li class="nav-item mb-2">
+                                <a class="nav-link @((ViewContext.RouteData.Values["controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["action"]?.ToString() == "Index") ||
+                                                    (ViewContext.RouteData.Values["controller"]?.ToString() == "Volunteers" && ViewContext.RouteData.Values["action"]?.ToString() == "Register") ||
+                                                    (ViewContext.RouteData.Values["controller"]?.ToString() == "IncidentReports" && ViewContext.RouteData.Values["action"]?.ToString() == "Create") ? "active" : "")"
+                                   asp-controller="Home" asp-action="Index">
+                                    <i class="bi bi-house-door me-2"></i>Home
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link @(ViewContext.RouteData.Values["action"]?.ToString() == "Dashboard" ? "active" : "")" asp-controller="Home" asp-action="Dashboard">
+                                    <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <div class="dropdown @(ViewContext.RouteData.Values["controller"]?.ToString() == "Volunteers" && ViewContext.RouteData.Values["action"]?.ToString() != "Register" ? "show" : "")">
+                                    <a class="nav-link dropdown-toggle @(ViewContext.RouteData.Values["controller"]?.ToString() == "Volunteers" && ViewContext.RouteData.Values["action"]?.ToString() != "Register" ? "active" : "")"
+                                       href="#"
+                                       role="button"
+                                       id="volunteersDropdown"
+                                       data-bs-toggle="dropdown"
+                                       aria-expanded="@(ViewContext.RouteData.Values["controller"]?.ToString() == "Volunteers" && ViewContext.RouteData.Values["action"]?.ToString() != "Register" ? "true" : "false")">
+                                        <i class="bi bi-people-fill me-2"></i>Manage Volunteers
+                                    </a>
+                                    <ul class="dropdown-menu @(ViewContext.RouteData.Values["controller"]?.ToString() == "Volunteers" && ViewContext.RouteData.Values["action"]?.ToString() != "Register" ? "show" : "")" aria-labelledby="volunteersDropdown">
+                                        <li>
+                                            <a class="dropdown-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")"
+                                               asp-controller="Volunteers"
+                                               asp-action="Index">
+                                                <i class="bi bi-person-check me-2"></i>Volunteers
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item @(ViewContext.RouteData.Values["action"]?.ToString() == "Pending" ? "active" : "")"
+                                               asp-controller="Volunteers"
+                                               asp-action="Pending">
+                                                <i class="bi bi-person-plus me-2"></i>Pending Volunteers
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </div>
-                        </form>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "IncidentReports" && ViewContext.RouteData.Values["action"]?.ToString() != "Create" ? "active" : "")"
+                                   asp-controller="IncidentReports" asp-action="Index">
+                                    <i class="bi bi-journal-text me-2"></i>Reports
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "TaskAssignments" ? "active" : "")"
+                                   asp-controller="TaskAssignments" asp-action="Index">
+                                    <i class="bi bi-list-task me-2"></i>Task Assignments
+                                </a>
+                            </li>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Settings" ? "active" : "")" asp-controller="Settings" asp-action="Index">
+                                    <i class="bi bi-gear me-2"></i>Settings
+                                </a>
+                            </li>
+                        </ul>
                     </div>
-                </li>
 
-                <!-- Messages Dropdown Menu -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-comments"></i>
-                        <span class="badge badge-danger navbar-badge">3</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="~/AdminLTE/dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Brad Diesel
-                                        <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">Call me whenever you can...</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="~/AdminLTE/dist/img/user8-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        John Pierce
-                                        <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">I got your message bro</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <!-- Message Start -->
-                            <div class="media">
-                                <img src="~/AdminLTE/dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
-                                <div class="media-body">
-                                    <h3 class="dropdown-item-title">
-                                        Nora Silvester
-                                        <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                                    </h3>
-                                    <p class="text-sm">The subject goes here</p>
-                                    <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                                </div>
-                            </div>
-                            <!-- Message End -->
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-                    </div>
-                </li>
-                <!-- Notifications Dropdown Menu -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link" data-toggle="dropdown" href="#">
-                        <i class="far fa-bell"></i>
-                        <span class="badge badge-warning navbar-badge">15</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                        <span class="dropdown-item dropdown-header">15 Notifications</span>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-envelope mr-2"></i> 4 new messages
-                            <span class="float-right text-muted text-sm">3 mins</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-users mr-2"></i> 8 friend requests
-                            <span class="float-right text-muted text-sm">12 hours</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-file mr-2"></i> 3 new reports
-                            <span class="float-right text-muted text-sm">2 days</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                        <i class="fas fa-expand-arrows-alt"></i>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-controlsidebar-slide="true" href="#" role="button">
-                        <i class="fas fa-th-large"></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        <!-- /.navbar -->
-        <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
-            <a href="index3.html" class="brand-link">
-                <img src="~/AdminLTE/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">AdminLTE 3</span>
-            </a>
-
-            <!-- Sidebar -->
-            <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="~/AdminLTE/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="#" class="d-block">Alexander Pierce</a>
-                    </div>
-                </div>
-
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!-- Add icons to the links using the .nav-icon class
-                             with font-awesome or any other icon font library -->
-                        <li class="nav-item menu-open">
-                            <a href="#" class="nav-link active">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Dashboard
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a asp-controller="Volunteers" asp-action="Index" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Volunteers
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-bs-toggle="collapse" href="#volunteerMenu" role="button" aria-expanded="false" aria-controls="volunteerMenu">
-                                Volunteer
-                            </a>
-                            <div class="collapse" id="volunteerMenu">
-                                <ul class="list-unstyled ps-3">
-                                    <li>
-                                        <a class="nav-link" asp-controller="Volunteer" asp-action="Approved">Approved Volunteers</a>
-                                    </li>
-                                    <li>
-                                        <a class="nav-link" asp-controller="Volunteer" asp-action="Pending">Pending Applications</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
-                    </ul>
+                    <!-- Push logout to bottom -->
+                    @if ((ViewContext.RouteData.Values["controller"]?.ToString() == "Settings"))
+                    {
+                        <div class="mt-auto">
+                            <form class="d-inline" asp-area="Identity" asp-page="/Account/Logout" method="post">
+                                <button type="submit" class="nav-link btn btn-link" style="color: inherit; padding: 0;">
+                                    <i class="bi bi-box-arrow-right me-2"></i>Logout
+                                </button>
+                            </form>
+                        </div>
+                    }
                 </nav>
-                <!-- /.sidebar-menu -->
+
+                <!-- Main Content -->
+                <div class="col-md-10 d-flex flex-column justify-content-between">
+                    <main class="flex-grow-1 py-4 px-4">
+                        @RenderBody()
+                    </main>
+
+                    <!-- Footer beside sidebar (not bottom of page) -->
+                    <footer class="d-flex justify-content-between align-items-center border-top px-4 py-2">
+                        <div class="text-muted small">
+                            <strong>All Rights Reserved &copy; @DateTime.Now.Year | </strong>
+                            <a> Designed and Developed by Group 10</a>
+                        </div>
+                    </footer>
+                </div>
             </div>
-            <!-- /.sidebar -->
-        </aside>
-
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-
-            <!-- Main content -->
-            <section class="content">
-                <div class="container-fluid">
-                    @RenderBody()
-				</div>
-            </section>
-            <!-- /.content -->
         </div>
-        <!-- /.content-wrapper -->
-        <footer class="main-footer">
-            <strong>All Rights Reserved &copy; @DateTime.Now.Year <a href="">Designed and Developed by Group </a>.</strong>
-            <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 3.2.0
-            </div>
-        </footer>
-
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
     </div>
-    <!-- ./wrapper -->
-    <!-- jQuery -->
-    <script src="~/AdminLTE/plugins/jquery/jquery.min.js"></script>
-    <!-- jQuery UI 1.11.4 -->
-    <script src="~/AdminLTE/plugins/jquery-ui/jquery-ui.min.js"></script>
-    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-    <script>
-        $.widget.bridge('uibutton', $.ui.button)
-    </script>
-    <!-- Bootstrap 4 -->
-    <script src="~/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- ChartJS -->
-    <script src="~/AdminLTE/plugins/chart.js/Chart.min.js"></script>
-    <!-- Sparkline -->
-    <script src="~/AdminLTE/plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="~/AdminLTE/plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="~/AdminLTE/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="~/AdminLTE/plugins/jquery-knob/jquery.knob.min.js"></script>
-    <!-- daterangepicker -->
-    <script src="~/AdminLTE/plugins/moment/moment.min.js"></script>
-    <script src="~/AdminLTE/plugins/daterangepicker/daterangepicker.js"></script>
-    <!-- Tempusdominus Bootstrap 4 -->
-    <script src="~/AdminLTE/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-    <!-- Summernote -->
-    <script src="~/AdminLTE/plugins/summernote/summernote-bs4.min.js"></script>
-    <!-- overlayScrollbars -->
-    <script src="~/AdminLTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="~/AdminLTE/dist/js/adminlte.js"></script>
-    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-    <script src="~/AdminLTE/dist/js/pages/dashboard.js"></script>
-    <!-- DataTables  & Plugins -->
-    <script src="~/AdminLTE/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="~/AdminLTE/plugins/jszip/jszip.min.js"></script>
-    <script src="~/AdminLTE/plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="~/AdminLTE/plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="~/AdminLTE/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
-    <script>
-        $(function () {
-          $("#example1").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-          }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-          $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-          });
-        });
-    </script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
-
 </body>
 </html>
-
-
-
-
-
-
-

@@ -12,5 +12,7 @@ namespace VolunteerManagementSystem.Data
         }
 
         public DbSet<Volunteer> Volunteers { get; set; }
+        public DbSet<IncidentReport> IncidentReports { get; set; }
+        public DbSet<TaskAssignment> TaskAssignments { get; set; }
     }
 }

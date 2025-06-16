@@ -15,5 +15,8 @@ namespace VolunteerManagementSystem.Models
         public string volunteerType{ get; set; }
         public string volunteerSkills { get; set; }
         public bool IsApproved { get; set; } = false;
+        public string Status { get; set; } = "Pending"; // 'Pending', 'Approved', 'Rejected'
     }
+
+
 }

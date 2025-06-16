@@ -4,87 +4,84 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Volunteer</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.firstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.firstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.middleName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.middleName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.lastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.lastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.phoneNumber)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.phoneNumber)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.address)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.volunteerType)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.volunteerType)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.volunteerSkills)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.volunteerSkills)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.createdById)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.createdById)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.createdOn)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.createdOn)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.modifiedById)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.modifiedById)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.modifiedOn)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.modifiedOn)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header text-white" style="background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%);">
+            <h3 class="mb-0">Volunteer Details</h3>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3">First Name</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.firstName)</dd>
+                <dt class="col-sm-3">Middle Name</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.middleName)</dd>
+                <dt class="col-sm-3">Last Name</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.lastName)</dd>
+                <dt class="col-sm-3">Phone Number</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.phoneNumber)</dd>
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.email)</dd>
+                <dt class="col-sm-3">Address</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.address)</dd>
+                <dt class="col-sm-3">Volunteer Type</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.volunteerType)</dd>
+                <dt class="col-sm-3">Volunteer Skills</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.volunteerSkills)</dd>
+            </dl>
+        </div>
+        <div class="card-footer bg-white d-flex justify-content-end gap-2">
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-gradient-primary" style="background: linear-gradient(135deg, #36d1c4 0%, #5b86e5 100%); color: white; font-weight: 600; border: none;">
+                <i class="fa fa-pen-to-square me-1"></i>Edit
+            </a>
+            <a asp-action="Index" class="btn btn-outline-secondary">
+                <i class="fa fa-arrow-left me-1"></i>Back to List
+            </a>
+        </div>
+    </div>
+    <!-- Assigned Incidents Section -->
+    <div class="card shadow mt-4">
+        <div class="card-header text-white" style="background: linear-gradient(90deg, #5b86e5 0%, #36d1c4 100%);">
+            <h4 class="mb-0">Assigned Incidents</h4>
+        </div>
+        <div class="card-body p-0">
+            @if (ViewBag.AssignedTasks != null && ((List<VolunteerManagementSystem.Models.TaskAssignment>)ViewBag.AssignedTasks).Count > 0)
+            {
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Incident Title</th>
+                            <th>Task Description</th>
+                            <th>Status</th>
+                            <th>Assigned Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var task in (List<VolunteerManagementSystem.Models.TaskAssignment>)ViewBag.AssignedTasks)
+                        {
+                            <tr>
+                                <td>@task.IncidentReport?.Title</td>
+                                <td>@task.TaskDescription</td>
+                                <td>
+                                    @if (task.Status == "Pending") {
+                                        <span class="badge bg-warning text-dark">Pending</span>
+                                    } else if (task.Status == "In Progress") {
+                                        <span class="badge bg-info text-dark">In Progress</span>
+                                    } else if (task.Status == "Done") {
+                                        <span class="badge bg-success">Done</span>
+                                    } else {
+                                        <span class="badge bg-light text-dark">@task.Status</span>
+                                    }
+                                </td>
+                                <td>@task.AssignedDate.ToShortDateString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="text-center py-4 text-muted">No assigned incidents.</div>
+            }
+        </div>
+    </div>
 </div>

@@ -1,34 +1,50 @@
-﻿@model VolunteerManagementSystem.Models.Volunteer
+﻿<!-- Displays comprehensive information about a volunteer -->
+@model VolunteerManagementSystem.Models.Volunteer
 
 @{
     ViewData["Title"] = "Details";
 }
 
+<!-- Main container with card layout -->
 <div class="container mt-4">
+
+    <!-- Volunteer Information Card -->
     <div class="card shadow">
+
+        <!-- Card header with gradient background -->
         <div class="card-header text-white" style="background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%);">
             <h3 class="mb-0">Volunteer Details</h3>
         </div>
+
+        <!-- Card body with volunteer information -->
         <div class="card-body">
             <dl class="row mb-0">
+
+                <!-- Personal Information Section -->
                 <dt class="col-sm-3">First Name</dt>
                 <dd class="col-sm-9">@Html.DisplayFor(model => model.firstName)</dd>
                 <dt class="col-sm-3">Middle Name</dt>
                 <dd class="col-sm-9">@Html.DisplayFor(model => model.middleName)</dd>
                 <dt class="col-sm-3">Last Name</dt>
                 <dd class="col-sm-9">@Html.DisplayFor(model => model.lastName)</dd>
+
+                <!-- Contact Information Section -->
                 <dt class="col-sm-3">Phone Number</dt>
                 <dd class="col-sm-9">@Html.DisplayFor(model => model.phoneNumber)</dd>
                 <dt class="col-sm-3">Email</dt>
                 <dd class="col-sm-9">@Html.DisplayFor(model => model.email)</dd>
                 <dt class="col-sm-3">Address</dt>
                 <dd class="col-sm-9">@Html.DisplayFor(model => model.address)</dd>
+
+                <!-- Volunteer Details Section -->
                 <dt class="col-sm-3">Volunteer Type</dt>
                 <dd class="col-sm-9">@Html.DisplayFor(model => model.volunteerType)</dd>
                 <dt class="col-sm-3">Volunteer Skills</dt>
                 <dd class="col-sm-9">@Html.DisplayFor(model => model.volunteerSkills)</dd>
             </dl>
         </div>
+
+        <!-- Card footer with action buttons -->
         <div class="card-footer bg-white d-flex justify-content-end gap-2">
             <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-gradient-primary" style="background: linear-gradient(135deg, #36d1c4 0%, #5b86e5 100%); color: white; font-weight: 600; border: none;">
                 <i class="fa fa-pen-to-square me-1"></i>Edit
@@ -38,14 +54,20 @@
             </a>
         </div>
     </div>
+
     <!-- Assigned Incidents Section -->
     <div class="card shadow mt-4">
+
+        <!-- Card header with gradient background -->
         <div class="card-header text-white" style="background: linear-gradient(90deg, #5b86e5 0%, #36d1c4 100%);">
             <h4 class="mb-0">Assigned Incidents</h4>
         </div>
+
+        <!-- Card body with incidents table -->
         <div class="card-body p-0">
             @if (ViewBag.AssignedTasks != null && ((List<VolunteerManagementSystem.Models.TaskAssignment>)ViewBag.AssignedTasks).Count > 0)
             {
+                <!-- Incidents table with headers -->
                 <table class="table mb-0">
                     <thead>
                         <tr>
@@ -56,11 +78,15 @@
                         </tr>
                     </thead>
                     <tbody>
+
+                        <!-- Loop through assigned tasks -->
                         @foreach (var task in (List<VolunteerManagementSystem.Models.TaskAssignment>)ViewBag.AssignedTasks)
                         {
                             <tr>
                                 <td>@task.IncidentReport?.Title</td>
                                 <td>@task.TaskDescription</td>
+
+                                <!-- Status badges with conditional styling -->
                                 <td>
                                     @if (task.Status == "Pending") {
                                         <span class="badge bg-warning text-dark">Pending</span>
@@ -80,6 +106,7 @@
             }
             else
             {
+                <!-- No incidents message -->
                 <div class="text-center py-4 text-muted">No assigned incidents.</div>
             }
         </div>

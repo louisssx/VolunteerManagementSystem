@@ -1,22 +1,33 @@
+<!-- Displays a list of all completed task assignments.-->
 @model IEnumerable<VolunteerManagementSystem.Models.TaskAssignment>
 @{
     ViewData["Title"] = "Completed Tasks";
 }
 
+<!-- Main container for completed tasks -->
 <div class="container mt-4">
+
+    <!-- Navigation button -->
     <div class="mb-3">
         <a asp-action="Index" class="btn btn-secondary">
             <i class="fa fa-arrow-left me-1"></i>Back to Task Assignments
         </a>
     </div>
+
+    <!-- Completed tasks card -->
     <div class="card shadow">
+
+        <!-- Card header with success theme -->
         <div class="card-header bg-success text-white">
             <h3 class="mb-0">Completed Tasks</h3>
         </div>
         <div class="card-body p-0">
             @if (Model.Any())
             {
+                <!-- Completed tasks table -->
                 <table class="table table-hover table-bordered align-middle mb-0">
+
+                    <!-- Table header -->
                     <thead class="table-light">
                         <tr>
                             <th>Incident Report</th>
@@ -26,6 +37,8 @@
                             <th>Assigned Date</th>
                         </tr>
                     </thead>
+
+                    <!-- Table body with completed tasks -->
                     <tbody>
                     @foreach (var item in Model)
                     {
@@ -42,6 +55,7 @@
             }
             else
             {
+                <!-- Empty state message -->
                 <div class="text-center py-4 text-muted">No completed tasks.</div>
             }
         </div>

@@ -1,19 +1,31 @@
-﻿@model VolunteerManagementSystem.Models.Volunteer
+﻿<!-- Form for editing existing volunteer information -->
+@model VolunteerManagementSystem.Models.Volunteer
 
 @{
     ViewData["Title"] = "Edit";
 }
 
+<!-- Main container with card layout -->
 <div class="container mt-4">
     <div class="card shadow">
+
+        <!-- Card header with gradient background -->
         <div class="card-header text-white" style="background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%);">
             <h3 class="mb-0">Edit Volunteer</h3>
         </div>
+
+        <!-- Card body with edit form -->
         <div class="card-body">
             <form asp-action="Edit">
+
+                <!-- Validation summary for model-level errors -->
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <!-- Hidden field for volunteer ID -->
                 <input type="hidden" asp-for="Id" />
                 <div class="row g-3">
+
+                    <!-- Personal Information Section -->
                     <div class="col-md-4">
                         <label for="firstName" class="form-label">First Name</label>
                         <input asp-for="firstName" class="form-control" id="firstName" />
@@ -29,6 +41,8 @@
                         <input asp-for="lastName" class="form-control" id="lastName" />
                         <span asp-validation-for="lastName" class="text-danger"></span>
                     </div>
+
+                    <!-- Contact Information Section -->
                     <div class="col-md-6">
                         <label for="phoneNumber" class="form-label">Phone Number</label>
                         <input asp-for="phoneNumber" class="form-control" id="phoneNumber" />
@@ -44,6 +58,8 @@
                         <input asp-for="address" class="form-control" id="address" />
                         <span asp-validation-for="address" class="text-danger"></span>
                     </div>
+
+                    <!-- Volunteer Details Section -->
                     <div class="col-md-6">
                         <label for="volunteerType" class="form-label">Volunteer Type</label>
                         <input asp-for="volunteerType" class="form-control" id="volunteerType" />
@@ -55,6 +71,8 @@
                         <span asp-validation-for="volunteerSkills" class="text-danger"></span>
                     </div>
                 </div>
+
+                <!-- Action buttons -->
                 <div class="d-flex justify-content-end gap-2 mt-4">
                     <input type="submit" value="Save" class="btn btn-gradient-primary" style="background: linear-gradient(135deg, #36d1c4 0%, #5b86e5 100%); color: white; font-weight: 600; border: none;" />
                     <a asp-action="Index" class="btn btn-outline-secondary">
@@ -66,6 +84,7 @@
     </div>
 </div>
 
+<!-- Client-side validation scripts -->
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

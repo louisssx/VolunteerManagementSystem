@@ -2,7 +2,6 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using VolunteerManagementSystem.Models;
 using VolunteerManagementSystem.Data;
-using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 
 namespace VolunteerManagementSystem.Controllers
@@ -20,21 +19,12 @@ namespace VolunteerManagementSystem.Controllers
             _context = context; // Initialize database context
         }
 
-        // GET: /
         // Displays the home page view
         public IActionResult Index()
         {
             return View(); // Returns the default Index view
         }
-
-        // GET: /Home/Dashboard
         // Displays the dashboard view with key statistics and latest incidents
-        // Sets ViewBag properties for:
-        // - Total number of approved volunteers
-        // - Total number of incident reports
-        // - Total number of task assignments
-        // - Number of pending volunteer applications
-        // - Latest 5 incident reports ordered by date
         public IActionResult Dashboard()
         {
             ViewBag.VolunteerCount = _context.Volunteers.Count(v => v.IsApproved); // Count of approved volunteers
@@ -49,14 +39,6 @@ namespace VolunteerManagementSystem.Controllers
             return View(); // Returns the Dashboard view
         }
 
-        // GET: /Home/Privacy
-        // Displays the privacy policy page
-        public IActionResult Privacy()
-        {
-            return View(); // Returns the Privacy view
-        }
-
-        // GET: /Home/Error
         // Displays the error page with details about the current request
         // Uses ResponseCache attribute to prevent caching of error pages
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

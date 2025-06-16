@@ -1,38 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VolunteerManagementSystem.Models;
-using System.Linq;
 using VolunteerManagementSystem.Data;
-using System;
 using Microsoft.AspNetCore.Authorization;
 
 namespace VolunteerManagementSystem.Controllers
 {
-    [Authorize]
+    [Authorize] // Ensures only authenticated users can access this controller
     public class IncidentReportsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        // Constructor that injects the database context dependency
+        // Injects the application's database context
         public IncidentReportsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: /IncidentReports
-        // Displays a list of all incident reports
-        // Returns a view with the list of reports
+        // Displays all incident reports
         public IActionResult Index()
         {
             return View(_context.IncidentReports.ToList());
         }
 
-        // GET: /IncidentReports/Details/5
-        // Displays detailed information about a specific incident report
-        // Parameters:
-        // - id: The ID of the incident report to display
-        // Returns:
-        // - NotFound if report not found
-        // - View with report details
+        // Shows details of a specific report by ID
         public IActionResult Details(int id)
         {
             var report = _context.IncidentReports.FirstOrDefault(r => r.Id == id);
@@ -40,21 +30,13 @@ namespace VolunteerManagementSystem.Controllers
             return View(report);
         }
 
-        // GET: /IncidentReports/Create
-        // Displays the form to create a new incident report
-        // Returns a view with the creation form
+        // Displays form to create a new incident report
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: /IncidentReports/Create
-        // Handles the submission of the incident report form
-        // Parameters:
-        // - report: The incident report data submitted in the form
-        // Returns:
-        // - Redirects to Index on success
-        // - Returns to form with validation errors if invalid
+        // Handles form submission to create a new incident report
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create(IncidentReport report)
@@ -66,11 +48,12 @@ namespace VolunteerManagementSystem.Controllers
                 _context.IncidentReports.Add(report);
                 _context.SaveChanges();
 
-                // Auto-assign one available volunteer of matching type
+                // Auto-assign an available volunteer matching the incident type
                 var availableVolunteer = _context.Volunteers
                     .Where(v => v.IsApproved && v.volunteerType.ToLower() == report.Type.ToLower() &&
                         !_context.TaskAssignments.Any(t => t.VolunteerId == v.Id && (t.Status == "Pending" || t.Status == "In Progress")))
                     .FirstOrDefault();
+
                 if (availableVolunteer != null)
                 {
                     var assignment = new TaskAssignment
@@ -95,7 +78,7 @@ namespace VolunteerManagementSystem.Controllers
             return View(report);
         }
 
-        // GET: IncidentReports/Edit/5
+        // Displays form to edit an existing report
         public IActionResult Edit(int id)
         {
             var report = _context.IncidentReports.Find(id);
@@ -103,7 +86,7 @@ namespace VolunteerManagementSystem.Controllers
             return View(report);
         }
 
-        // POST: IncidentReports/Edit/5
+        // Handles form submission to update a report
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, IncidentReport report)
@@ -112,7 +95,6 @@ namespace VolunteerManagementSystem.Controllers
 
             if (ModelState.IsValid)
             {
-                // Debug log: print the new status to the console
                 Console.WriteLine($"[DEBUG] Updating IncidentReport Id={report.Id}, New Status={report.Status}");
                 _context.Update(report);
                 _context.SaveChanges();
@@ -121,7 +103,7 @@ namespace VolunteerManagementSystem.Controllers
             return View(report);
         }
 
-        // GET: IncidentReports/Delete/5
+        // Displays confirmation page for deleting a report
         public IActionResult Delete(int id)
         {
             var report = _context.IncidentReports.Find(id);
@@ -129,16 +111,14 @@ namespace VolunteerManagementSystem.Controllers
             return View(report);
         }
 
-        // POST: IncidentReports/Delete/5
+        // Handles deletion of a report
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
             var report = _context.IncidentReports.Find(id);
-            if (report == null)
-            {
-                return NotFound();
-            }
+            if (report == null) return NotFound();
+
             _context.IncidentReports.Remove(report);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));

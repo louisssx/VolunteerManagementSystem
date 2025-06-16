@@ -4,15 +4,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Meta tags and title for the registration pages -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ResponSync</title>
+    
+    <!-- External CSS dependencies -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for the registration page -->
     <style>
+        /* Base styles for full-height layout */
         html, body {
             height: 100%;
         }
+        
+        /* Body styles with gradient background and centered content */
         body {
             min-height: 100vh;
             height: 100%;
@@ -23,6 +31,8 @@
             align-items: center;
             justify-content: center;
         }
+        
+        /* Registration card container with glass-like effect */
         .login-card {
             background: rgba(255,255,255,0.92);
             border-radius: 24px;
@@ -34,25 +44,35 @@
             flex-direction: column;
             align-items: center;
         }
+        
+        /* Logo container styles */
         .login-logo {
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 1.5rem;
         }
+        
+        /* Logo image styles */
         .login-logo img {
             max-width: 60px;
             margin-right: 14px;
         }
+        
+        /* Logo text styles */
         .login-logo span {
             font-size: 2rem;
             font-weight: 700;
             color: #222;
             letter-spacing: 1px;
         }
+        
+        /* Text color overrides for the registration card */
         .login-card h2, .login-card p, .login-card label, .login-card a {
             color: #222 !important;
         }
+        
+        /* Form control and button color overrides */
         .login-card .form-control {
             color: #222;
         }
@@ -62,11 +82,18 @@
     </style>
 </head>
 <body>
+    <!-- Main container for centered registration content -->
     <div class="container d-flex align-items-center justify-content-center min-vh-100">
+
+        <!-- Registration form container with max width -->
         <div class="w-100" style="max-width: 420px;">
+
+            <!-- Main content area for registration forms -->
             @RenderBody()
         </div>
     </div>
+    
+    <!-- JavaScript dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     @RenderSection("Scripts", required: false)
 </body>

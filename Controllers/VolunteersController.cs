@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VolunteerManagementSystem.Data;
@@ -16,43 +12,27 @@ namespace VolunteerManagementSystem.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        // Constructor that injects the database context dependency
+        // Injects the database context
         public VolunteersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: /Volunteers
-        // Displays a list of all approved volunteers
-        // Returns only volunteers where IsApproved is true
+        // Displays approved volunteers
         public IActionResult Index()
         {
             var approved = _context.Volunteers.Where(v => v.IsApproved).ToList();
             return View(approved);
         }
 
-        // GET: /Volunteers/Details/5
-        // Displays detailed information about a specific volunteer
-        // Parameters:
-        // - id: The ID of the volunteer to display
-        // Returns:
-        // - NotFound if id is null or volunteer not found
-        // - View with volunteer details and their assigned tasks
+        // Displays volunteer details with assigned tasks
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var volunteer = await _context.Volunteers
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (volunteer == null)
-            {
-                return NotFound();
-            }
+            var volunteer = await _context.Volunteers.FirstOrDefaultAsync(m => m.Id == id);
+            if (volunteer == null) return NotFound();
 
-            // Fetch assigned tasks for this volunteer
             var assignedTasks = _context.TaskAssignments
                 .Include(t => t.IncidentReport)
                 .Where(t => t.VolunteerId == volunteer.Id)
@@ -63,38 +43,23 @@ namespace VolunteerManagementSystem.Controllers
             return View(volunteer);
         }
 
-        // GET: /Volunteers/Create
-        // Displays the form to create a new volunteer
-        // Sets up ViewBag with available volunteer types:
-        // - Medical
-        // - Logistics
-        // - Environmental
+        // Displays form to create a new volunteer
         public IActionResult Create()
         {
-            ViewBag.VolunteerTypes = new SelectList(new List<string>
-            {
-                "Medical",
-                "Logistics",
-                "Environmental"
-            });
-
+            ViewBag.VolunteerTypes = new SelectList(new List<string> { "Medical", "Logistics", "Environmental" });
             return View();
         }
 
-        // POST: Volunteers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Handles creation of a new volunteer
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Volunteer volunteer)
         {
             volunteer.createdById = "admin";
             volunteer.createdOn = DateTime.Now;
-
             volunteer.modifiedById = "admin";
             volunteer.modifiedOn = DateTime.Now;
 
-            // Set middleName to '-' if empty
             if (string.IsNullOrWhiteSpace(volunteer.middleName))
             {
                 volunteer.middleName = "-";
@@ -109,33 +74,23 @@ namespace VolunteerManagementSystem.Controllers
             return View(volunteer);
         }
 
-        // GET: Volunteers/Edit/5
+        // Displays form to edit volunteer details
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
             var volunteer = await _context.Volunteers.FindAsync(id);
-            if (volunteer == null)
-            {
-                return NotFound();
-            }
+            if (volunteer == null) return NotFound();
+
             return View(volunteer);
         }
 
-        // POST: Volunteers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // Handles volunteer detail updates
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,firstName,middleName,lastName,phoneNumber,email,address,volunteerType,volunteerSkills,createdById,createdOn,modifiedById,modifiedOn")] Volunteer volunteer)
         {
-            if (id != volunteer.Id)
-            {
-                return NotFound();
-            }
+            if (id != volunteer.Id) return NotFound();
 
             if (ModelState.IsValid)
             {
@@ -146,39 +101,26 @@ namespace VolunteerManagementSystem.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VolunteerExists(volunteer.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (!VolunteerExists(volunteer.Id)) return NotFound();
+                    else throw;
                 }
                 return RedirectToAction(nameof(Index));
             }
             return View(volunteer);
         }
 
-        // GET: Volunteers/Delete/5
+        // Displays delete confirmation
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            if (id == null) return NotFound();
 
-            var volunteer = await _context.Volunteers
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (volunteer == null)
-            {
-                return NotFound();
-            }
+            var volunteer = await _context.Volunteers.FirstOrDefaultAsync(m => m.Id == id);
+            if (volunteer == null) return NotFound();
 
             return View(volunteer);
         }
 
-        // POST: Volunteers/Delete/5
+        // Confirms and deletes volunteer
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -188,7 +130,6 @@ namespace VolunteerManagementSystem.Controllers
             {
                 _context.Volunteers.Remove(volunteer);
             }
-
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -198,9 +139,7 @@ namespace VolunteerManagementSystem.Controllers
             return _context.Volunteers.Any(e => e.Id == id);
         }
 
-        // GET: /Volunteers/Approved
-        // Displays a list of all approved volunteers
-        // Returns only volunteers where Status is "Approved"
+        // Displays volunteers with "Approved" status
         public IActionResult Approved()
         {
             var approvedVolunteers = _context.Volunteers
@@ -209,10 +148,7 @@ namespace VolunteerManagementSystem.Controllers
             return View(approvedVolunteers);
         }
 
-        // GET: /Volunteers/Pending
-        // Displays a list of pending and rejected volunteer applications
-        // Sets ViewBag.RejectedVolunteers with all rejected volunteers
-        // Returns only volunteers where Status is "Pending"
+        // Displays pending and rejected volunteers
         public IActionResult Pending()
         {
             var pending = _context.Volunteers.Where(v => v.Status == "Pending").ToList();
@@ -221,44 +157,30 @@ namespace VolunteerManagementSystem.Controllers
             return View(pending);
         }
 
-        // GET: /Volunteers/Rejected
-        // Displays a list of all rejected volunteer applications
-        // Returns only volunteers where Status is "Rejected"
+        // Displays rejected volunteers
         public IActionResult Rejected()
         {
             var rejected = _context.Volunteers.Where(v => v.Status == "Rejected").ToList();
             return View(rejected);
         }
 
-        // GET: /Volunteers/Register
-        // Displays the volunteer registration form
+        // Displays registration form
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
-        // POST: /Volunteers/Register
-        // Handles the submission of the volunteer registration form
-        // Parameters:
-        // - volunteer: The volunteer data submitted in the form
-        // Actions:
-        // - Sets middleName to '-' if empty
-        // - Sets IsApproved to false
-        // - Sets createdOn and modifiedOn to current date/time
-        // - Adds the volunteer to the database
-        // Returns:
-        // - Redirects to RegisterConfirmation on success
-        // - Returns to form with validation errors if invalid
+        // Handles registration submission
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Register(Volunteer volunteer)
         {
-            // Set middleName to '-' if empty
             if (string.IsNullOrWhiteSpace(volunteer.middleName))
             {
                 volunteer.middleName = "-";
             }
+
             if (ModelState.IsValid)
             {
                 volunteer.IsApproved = false;
@@ -271,17 +193,13 @@ namespace VolunteerManagementSystem.Controllers
             return View(volunteer);
         }
 
-        // GET: /Volunteers/RegisterConfirmation
-        // Displays the registration confirmation page after successful registration
+        // Shows confirmation after registration
         public IActionResult RegisterConfirmation()
         {
             return View();
         }
 
-        // POST: /Volunteers/Approve
-        // Approves a volunteer application
-        // Parameters:
-        // - id: The ID of the volunteer to approve
+        // Approves pending volunteer and auto-assigns to incident if available
         [HttpPost]
         public IActionResult Approve(int id)
         {
@@ -293,12 +211,12 @@ namespace VolunteerManagementSystem.Controllers
                 volunteer.modifiedOn = DateTime.Now;
                 _context.SaveChanges();
 
-                // Auto-assign this volunteer to the oldest unassigned incident of their type if available
                 var unassignedIncident = _context.IncidentReports
                     .Where(ir => ir.Type.ToLower() == volunteer.volunteerType.ToLower() &&
                         !_context.TaskAssignments.Any(t => t.IncidentReportId == ir.Id && (t.Status == "Pending" || t.Status == "In Progress")))
                     .OrderBy(ir => ir.DateReported)
                     .FirstOrDefault();
+
                 if (unassignedIncident != null)
                 {
                     var newAssignment = new TaskAssignment
@@ -316,6 +234,7 @@ namespace VolunteerManagementSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        // Rejects a pending volunteer
         [HttpPost]
         public IActionResult Reject(int id)
         {
@@ -330,9 +249,10 @@ namespace VolunteerManagementSystem.Controllers
             return RedirectToAction("Pending");
         }
 
+        // Restores a rejected volunteer to pending status
         [HttpPost]
         public IActionResult Restore(int id)
-            {
+        {
             var volunteer = _context.Volunteers.Find(id);
             if (volunteer != null && volunteer.Status == "Rejected")
             {

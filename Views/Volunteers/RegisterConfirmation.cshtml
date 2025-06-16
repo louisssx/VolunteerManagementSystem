@@ -1,39 +1,55 @@
+<!-- Displays success message after volunteer registration -->
 @{
     ViewData["Title"] = "Registration Successful";
 }
+
+<!-- Main container with centered content -->
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
+
+            <!-- Success alert with gradient background -->
             <div class="alert alert-success text-center shadow" style="background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%); color: white; border-radius: 16px;">
                 <h4 class="alert-heading">Thank you for registering!</h4>
                 <p>Your volunteer application has been submitted and is pending approval. You will be notified once your application is reviewed.</p>
+
+                <!-- Navigation button -->
                 <button class="btn btn-light mt-3" style="color: #36d1c4; font-weight: 600;" onclick="window.location.href='/'">Back to Home</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Success Modal -->
+<!-- Success Modal Dialog -->
 <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-success text-white">
-        <h5 class="modal-title" id="successModalLabel">Registration Successful</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body text-center">
-        <i class="fa fa-check-circle fa-3x mb-3 text-success"></i>
-        <p>Your volunteer application has been submitted and is pending approval.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success" onclick="window.location.href='/'">Back to Home</button>
-      </div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <!-- Modal header with success background -->
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title" id="successModalLabel">Registration Successful</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Modal body with success message -->
+            <div class="modal-body text-center">
+                <i class="fa fa-check-circle fa-3x mb-3 text-success"></i>
+                <p>Your volunteer application has been submitted and is pending approval.</p>
+            </div>
+
+            <!-- Modal footer with navigation button -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="window.location.href='/'">Back to Home</button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
+<!-- Scripts section for modal functionality -->
 @section Scripts {
 <script>
+
+    // Initialize and show success modal on page load
     var successModal = new bootstrap.Modal(document.getElementById('successModal'));
     window.onload = function() {
         successModal.show();

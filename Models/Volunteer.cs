@@ -1,22 +1,31 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-
-namespace VolunteerManagementSystem.Models
+﻿namespace VolunteerManagementSystem.Models
 {
+    // Represents a volunteer user in the system
     public class Volunteer : UserActivity
     {
-        public int Id { get; set; }
-        public string firstName { get; set; }
-        public string middleName { get; set; }
-        public string lastName { get; set; }
-        public string fullname => $"{firstName} {middleName} {lastName}";
-        public string phoneNumber { get; set; }
-        public string email { get; set; }
-        public string address { get; set; }
-        public string volunteerType{ get; set; }
-        public string volunteerSkills { get; set; }
-        public bool IsApproved { get; set; } = false;
-        public string Status { get; set; } = "Pending"; // 'Pending', 'Approved', 'Rejected'
+        public int Id { get; set; } // Unique identifier for the volunteer
+
+        public string firstName { get; set; } // Volunteer’s first name
+
+        public string middleName { get; set; } // Volunteer’s middle name
+
+        public string lastName { get; set; } // Volunteer’s last name
+
+        public string fullname => $"{firstName} {middleName} {lastName}"; // Computed full name
+
+        public string phoneNumber { get; set; } // Contact number
+
+        public string email { get; set; } // Email address
+
+        public string address { get; set; } // Residential address
+
+        public string volunteerType { get; set; } // Type/category of volunteer (e.g., Medical, Logistics)
+
+        public string volunteerSkills { get; set; } // Skills or expertise the volunteer offers
+
+        public bool IsApproved { get; set; } = false; // Indicates if the volunteer has been approved
+
+        public string Status { get; set; } = "Pending"; // Registration status: Pending, Approved, or Rejected
     }
-
-
 }
+

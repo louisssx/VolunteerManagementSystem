@@ -1,31 +1,44 @@
 @{
+    // Set the page title and display the current admin user's name
     ViewData["Title"] = "Dashboard";
     var adminName = User.Identity?.Name ?? "Admin Name";
 }
 
+<!-- Dashboard Section: Contains greeting, search bar, and shortcut buttons -->
 <div class="dashboard-hero position-relative mb-4" style="background: linear-gradient(120deg, #36d1c4 0%, #5b86e5 100%); border-radius: 1.5rem; padding: 2.5rem 2rem 3.5rem 2rem; overflow: hidden; min-height: 240px; font-family: 'Segoe UI', 'Inter', Arial, sans-serif;">
     <div class="row align-items-center">
         <div class="col-md-8">
+
+            <!-- Greeting the admin -->
             <h1 class="fw-bold" style="font-size: 2.7rem; color: white;">Hello, <span style="color: #ffe082;">@adminName</span></h1>
             <div style="color: #e3f2fd; font-size: 1.1rem; margin-bottom: 1rem;">Welcome back! Here's what's happening today.</div>
+
+            <!-- Search bar -->
             <form class="mb-3" style="max-width: 420px;">
                 <div class="input-group input-group-lg">
                     <input type="text" class="form-control" placeholder="Search" aria-label="Search">
                     <button class="btn btn-dark" type="submit"><i class="fa fa-search"></i></button>
                 </div>
             </form>
-            <!-- Shortcut Buttons + New Report -->
+
+            <!-- Quick access shortcut buttons -->
             <div class="d-flex flex-nowrap gap-3 align-items-center mt-2" style="overflow-x: auto;">
+
+                <!-- Link to volunteer list with count -->
                 <a asp-controller="Volunteers" asp-action="Index" class="shortcut-btn d-flex flex-column align-items-center justify-content-center text-center animate-shortcut" style="background: white; color: #5b86e5; border-radius: 1.5rem; min-width: 110px; min-height: 90px; box-shadow: 0 2px 8px rgba(54,209,196,0.10); border: 2px solid #5b86e5; text-decoration: none; padding: 0.7rem 1.1rem; transition: box-shadow 0.2s, transform 0.2s; font-weight: 600;">
                     <i class="fa fa-users mb-1" style="font-size: 1.5rem;"></i>
                     <span style="font-size: 1rem;">Volunteers</span>
                     <span style="font-size: 1.3rem; font-weight: bold; margin-top: 0.1rem;">@ViewBag.VolunteerCount</span>
                 </a>
+
+                <!-- Link to incident report list with count -->
                 <a asp-controller="IncidentReports" asp-action="Index" class="shortcut-btn d-flex flex-column align-items-center justify-content-center text-center animate-shortcut" style="background: white; color: red; border-radius: 1.5rem; min-width: 110px; min-height: 90px; box-shadow: 0 2px 8px rgba(91,134,229,0.10); border: 2px solid red; text-decoration: none; padding: 0.7rem 1.1rem; transition: box-shadow 0.2s, transform 0.2s; font-weight: 600;">
                     <i class="fa fa-clipboard-list mb-1" style="font-size: 1.5rem;"></i>
                     <span style="font-size: 1rem;">Reports</span>
                     <span style="font-size: 1.3rem; font-weight: bold; margin-top: 0.1rem;">@ViewBag.IncidentReportCount</span>
                 </a>
+
+                <!-- Link to pending volunteer approvals with count -->
                 <a asp-controller="Volunteers" asp-action="Pending" class="shortcut-btn d-flex flex-column align-items-center justify-content-center text-center animate-shortcut" style="background: white; color: #ffc107; border-radius: 1.5rem; min-width: 110px; min-height: 90px; box-shadow: 0 2px 8px rgba(255,193,7,0.10); border: 2px solid #ffc107; text-decoration: none; padding: 0.7rem 1.1rem; transition: box-shadow 0.2s, transform 0.2s; font-weight: 600;">
                     <i class="fa fa-user-clock mb-1" style="font-size: 1.5rem;"></i>
                     <span style="font-size: 1rem;">Pending</span>
@@ -33,21 +46,26 @@
                 </a>
             </div>
         </div>
+
+        <!-- Admin profile image section (desktop only) -->
         <div class="col-md-4 d-none d-md-flex justify-content-end align-items-end">
             <img src="/img/admin.jfif" alt="Admin Character" style="max-height: 170px; margin-top: 1rem; border-radius: 50%; object-fit: cover; aspect-ratio: 1 / 1; width: 170px; background: #fff; box-shadow: 0 2px 12px rgba(54,209,196,0.10);" />
         </div>
     </div>
+
+    <!-- Decorative SVG wave at the bottom of the hero section -->
     <svg style="position: absolute; bottom: 0; left: 0; width: 100%; height: 60px;" viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill="#fff" fill-opacity="0.2" d="M0,32L48,37.3C96,43,192,53,288,58.7C384,64,480,64,576,58.7C672,53,768,43,864,42.7C960,43,1056,53,1152,58.7C1248,64,1344,64,1392,64L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
     </svg>
 </div>
 
-<!-- Feed Section -->
+<!-- Latest Incident Feed Section -->
 <div class="feed-section" style="margin-top: 0; font-family: 'Segoe UI', 'Inter', Arial, sans-serif;">
     @if (ViewBag.LatestIncidents != null)
     {
         foreach (var incident in ViewBag.LatestIncidents)
         {
+            // Assign icon and color based on incident type
             var typeIcon = "fa-info-circle";
             var typeColor = "#5b86e5";
             if (incident.Type != null && incident.Type.ToLower().Contains("medical")) { typeIcon = "fa-briefcase-medical"; typeColor = "#36d1c4"; }
@@ -55,6 +73,7 @@
             else if (incident.Type != null && incident.Type.ToLower().Contains("environmental")) { typeIcon = "fa-leaf"; typeColor = "#08979D"; }
             else if (incident.Type != null && incident.Type.ToLower().Contains("community")) { typeIcon = "fa-users"; typeColor = "red"; }
 
+            <!-- Display incident card with title, status, type, date, and description -->
             <div class="card mb-4 animate-feed" style="border-radius: 1.2rem; box-shadow: 0 4px 16px rgba(54,209,196,0.08); border: 1.5px solid #e3eaff;">
                 <div class="d-flex justify-content-between align-items-center px-4 pt-3 pb-1" style="border-top-left-radius: 1.2rem; border-top-right-radius: 1.2rem; background: linear-gradient(90deg, #f8fafc 80%, #e3eaff 100%);">
                     <div class="d-flex align-items-center gap-2">
@@ -62,13 +81,22 @@
                         <span style="font-weight: 600; color: #333;">@incident.Title</span>
                     </div>
                     <div>
-                        @if (incident.Status == "Pending") {
+
+                        <!-- Display incident status badge -->
+                        @if (incident.Status == "Pending")
+                        {
                             <span class="fw-bold badge bg-warning text-dark" style="font-size: 1rem;"><i class="fa fa-info-circle me-1"></i>Pending</span>
-                        } else if (incident.Status == "Done") {
+                        }
+                        else if (incident.Status == "Done")
+                        {
                             <span class="fw-bold badge bg-success" style="font-size: 1rem;"><i class="fa fa-check-circle me-1"></i>Done</span>
-                        } else if (incident.Status == "Not Started") {
+                        }
+                        else if (incident.Status == "Not Started")
+                        {
                             <span class="fw-bold badge bg-secondary" style="font-size: 1rem;"><i class="fa fa-circle me-1"></i>Not Started</span>
-                        } else {
+                        }
+                        else
+                        {
                             <span class="fw-bold badge bg-light text-dark" style="font-size: 1rem;"><i class="fa fa-info-circle me-1"></i>@incident.Status</span>
                         }
                     </div>
@@ -84,21 +112,32 @@
     }
     else
     {
+        <!-- Fallback message if no incident data is available -->
         <div class="alert alert-info">No recent incidents to display.</div>
     }
 </div>
 
+<!-- Animation and hover effects -->
 <style>
     .animate-shortcut:hover {
         box-shadow: 0 4px 16px rgba(54,209,196,0.18) !important;
         transform: translateY(-2px) scale(1.04);
         text-decoration: none;
     }
+
     .animate-feed {
         animation: fadeInUp 0.7s cubic-bezier(.39,.575,.565,1) both;
     }
+
     @@keyframes fadeInUp {
-        0% { opacity: 0; transform: translateY(30px); }
-        100% { opacity: 1; transform: none; }
+        0% {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: none;
+        }
     }
-</style> 
+</style>

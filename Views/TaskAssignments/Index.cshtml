@@ -1,23 +1,38 @@
+<!-- Displays a list of all active task assignments with filtering capabilities -->
 @model IEnumerable<VolunteerManagementSystem.Models.TaskAssignment>
 
 @{
     ViewData["Title"] = "Task Assignments";
+
+    // Get status filter from query string, default to "All" if not specified
     var filter = Context.Request.Query["statusFilter"].ToString();
     if (string.IsNullOrEmpty(filter)) { filter = "All"; }
 }
 
+<!-- Main container for task assignments -->
 <div class="container mt-4">
+
+    <!-- Action buttons section -->
     <div class="d-flex justify-content-between mb-3">
         <a asp-action="Done" class="btn btn-success">
             <i class="fa fa-check me-1"></i>View Completed Tasks
         </a>
     </div>
+
+    <!-- Task assignments card -->
     <div class="card shadow" style="border-radius: 18px;">
+
+        <!-- Card header with gradient background -->
         <div class="card-header text-white" style="background: linear-gradient(90deg, #5b86e5 0%, #36d1c4 100%); border-top-left-radius: 18px; border-top-right-radius: 18px;">
             <h3 class="mb-0">Task Assignments</h3>
         </div>
+
         <div class="card-body p-0">
+
+            <!-- Task assignments table -->
             <table class="table table-hover mb-0" style="border-radius: 12px; overflow: hidden;">
+
+                <!-- Table header with gradient background -->
                 <thead style="background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%); color: white;">
                     <tr>
                         <th class="text-center">Incident Report</th>
@@ -30,17 +45,21 @@
                 </thead>
                 <tbody>
                 @{
+                    // Filter out completed tasks and apply status filter if specified
                     IEnumerable<VolunteerManagementSystem.Models.TaskAssignment> filteredModel = Model.Where(t => t.Status != "Done");
                     if (filter == "Pending")
                     {
                         filteredModel = filteredModel.Where(t => t.Status == "Pending" || t.Status == "Not Started");
                     }
                 }
+                <!-- Task assignment rows -->
                 @foreach (var item in filteredModel) {
                     <tr style="background: rgba(54,209,196,0.04);">
                         <td class="text-center">@item.IncidentReport?.Title</td>
                         <td>@item.Volunteer?.firstName @item.Volunteer?.lastName</td>
                         <td>@item.TaskDescription</td>
+
+                        <!-- Status badge with conditional styling -->
                         <td class="text-center">
                             @if (item.Status == "Pending") {
                                 <span class="badge bg-warning text-dark">Pending</span>
@@ -53,6 +72,8 @@
                             }
                         </td>
                         <td class="text-center">@item.AssignedDate.ToShortDateString()</td>
+
+                        <!-- Action buttons -->
                         <td class="text-center">
                             <div class="d-flex justify-content-center gap-2">
                                 <button type="button" class="btn btn-gradient-primary btn-sm" style="background: linear-gradient(135deg, #36d1c4 0%, #5b86e5 100%); color: white; border: none; font-weight:600; border-radius:8px;" data-bs-toggle="modal" data-bs-target="#editModal-@item.Id">
@@ -71,17 +92,23 @@
     </div>
 </div>
 
-<!-- Move all modals here, after the table -->
+<!-- Edit modals for each task assignment -->
 @foreach (var item in filteredModel) {
     <div class="modal fade" id="editModal-@item.Id" tabindex="-1" aria-labelledby="editModalLabel-@item.Id" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+
+                <!-- Modal header with gradient background -->
                 <div class="modal-header bg-primary text-white" style="background: linear-gradient(90deg, #36d1c4 0%, #5b86e5 100%);">
                     <h5 class="modal-title" id="editModalLabel-@item.Id">Edit Task Assignment Status</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+
+                <!-- Edit form -->
                 <form asp-action="UpdateStatus" asp-route-id="@item.Id" method="post">
                     <div class="modal-body">
+
+                        <!-- Read-only fields -->
                         <div class="mb-2">
                             <label class="form-label">Incident Report</label>
                             <input type="text" class="form-control" value="@item.IncidentReport?.Title" readonly />
@@ -98,6 +125,8 @@
                             <label class="form-label">Assigned Date</label>
                             <input type="text" class="form-control" value="@item.AssignedDate.ToShortDateString()" readonly />
                         </div>
+
+                        <!-- Status dropdown -->
                         <div class="mb-2">
                             <label class="form-label">Status</label>
                             <select name="status" class="form-select">
@@ -111,6 +140,8 @@
                             </select>
                         </div>
                     </div>
+
+                    <!-- Modal footer with action buttons -->
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="font-weight:600; border-radius:8px;">Cancel</button>
                         <button type="submit" class="btn btn-success" style="font-weight:600; border-radius:8px;">Save</button>
@@ -121,6 +152,7 @@
     </div>
 }
 
+<!-- JavaScript functions for status dropdown visibility -->
 @section Scripts {
     <script>
         function showStatusDropdown(id) {

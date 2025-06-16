@@ -1,10 +1,22 @@
-﻿@model IEnumerable<VolunteerManagementSystem.Models.Volunteer>
+﻿<!-- 
+    Approved Volunteers View
+    Displays a list of all approved volunteers.
+    Features:
+    - List of approved volunteers
+    - Basic volunteer information display
+    - Simple table layout
+-->
+@model IEnumerable<VolunteerManagementSystem.Models.Volunteer>
 @{
     ViewData["Title"] = "Approved Volunteers";
 }
 
+<!-- Page title -->
 <h2>Approved Volunteers</h2>
+
+<!-- Volunteers table -->
 <table class="table">
+    <!-- Table header -->
     <thead>
         <tr>
             <th>Name</th>
@@ -12,6 +24,7 @@
             <th>Phone</th>
         </tr>
     </thead>
+    <!-- Table body with approved volunteers -->
     <tbody>
         @foreach (var v in Model)
         {

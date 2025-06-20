@@ -7,6 +7,14 @@
 <!-- Main container for completed tasks -->
 <div class="container mt-4">
 
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert" style="font-weight:600; border-radius:10px;">
+            <i class="fa fa-check-circle me-1"></i> @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     <!-- Navigation button -->
     <div class="mb-3">
         <a asp-action="Index" class="btn btn-secondary">
@@ -35,6 +43,7 @@
                             <th>Task Description</th>
                             <th>Status</th>
                             <th>Assigned Date</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
 
@@ -48,6 +57,11 @@
                             <td>@item.TaskDescription</td>
                             <td><span class="badge bg-success">Done</span></td>
                             <td>@item.AssignedDate.ToShortDateString()</td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal-@item.Id">
+                                    <i class="fa fa-trash me-1"></i>Delete
+                                </button>
+                            </td>
                         </tr>
                     }
                     </tbody>
@@ -60,4 +74,56 @@
             }
         </div>
     </div>
-</div> 
+</div>
+
+@foreach (var item in Model)
+{
+    <div class="modal fade" id="deleteModal-@item.Id" tabindex="-1" aria-labelledby="deleteModalLabel-@item.Id" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="border-radius: 1.2rem; overflow: hidden;">
+                <div class="modal-header" style="background: linear-gradient(90deg, #ff9800 0%, #ff5252 100%);">
+                    <h5 class="modal-title text-white fw-bold" id="deleteModalLabel-@item.Id">
+                        <i class="fa fa-exclamation-triangle me-2"></i>Delete Completed Task
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form asp-action="Delete" asp-route-id="@item.Id" method="post">
+                    @Html.AntiForgeryToken()
+                    <div class="modal-body">
+                        <div class="alert alert-danger mb-3" style="font-weight:500;">
+                            <i class="fa fa-exclamation-circle me-1"></i> Are you sure you want to <b>delete</b> this completed task assignment?
+                        </div>
+                        <div class="mb-3 p-3" style="background:#f8fafc;">
+                            <div class="row mb-2">
+                                <div class="col-5 fw-semibold">Incident Report</div>
+                                <div class="col-7">@item.IncidentReport?.Title</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 fw-semibold">Volunteer</div>
+                                <div class="col-7">@item.Volunteer?.firstName @item.Volunteer?.lastName</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 fw-semibold">Task Description</div>
+                                <div class="col-7">@item.TaskDescription</div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-5 fw-semibold">Assigned Date</div>
+                                <div class="col-7">@item.AssignedDate.ToShortDateString()</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5 fw-semibold">Status</div>
+                                <div class="col-7">
+                                    <span class="badge bg-success">Done</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" style="font-weight:600; border-radius:8px;">Cancel</button>
+                        <button type="submit" class="btn btn-danger" style="font-weight:600; border-radius:8px;"><i class="fa fa-trash me-1"></i>Delete</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+} 

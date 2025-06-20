@@ -24,6 +24,7 @@ namespace VolunteerManagementSystem.Controllers
         {
             return View(); // Returns the default Index view
         }
+
         // Displays the dashboard view with key statistics and latest incidents
         public IActionResult Dashboard()
         {

@@ -56,7 +56,12 @@
                             <a asp-action="Details" asp-route-id="@v.Id" class="btn btn-gradient-warning btn-sm me-1" style="background: linear-gradient(135deg, #5b86e5 0%, #36d1c4 100%); color: white; border: none;">
                                 <i class="fa fa-eye me-1"></i>View
                             </a>
-                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" data-id="@v.Id">
+                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal"
+                                    data-id="@v.Id"
+                                    data-name="@v.firstName @v.middleName @v.lastName"
+                                    data-email="@v.email"
+                                    data-type="@v.volunteerType"
+                                    data-status="@v.Status">
                                 <i class="fa fa-trash me-1"></i>Delete
                             </button>
                         </td>
@@ -124,4 +129,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+    <script>
+        $('#confirmDeleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var name = button.data('name');
+            var email = button.data('email');
+            var type = button.data('type');
+            var status = button.data('status');
+            var modal = $(this);
+            modal.find('#deleteId').val(id);
+            modal.find('#volunteerName').text(name);
+            modal.find('#volunteerEmail').text(email);
+            modal.find('#volunteerType').text(type);
+            modal.find('#volunteerStatus').text(status);
+        });
+    </script>
 }

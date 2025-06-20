@@ -21,6 +21,7 @@ namespace VolunteerManagementSystem.Controllers
             var assignments = _context.TaskAssignments
                 .Include(t => t.IncidentReport)
                 .Include(t => t.Volunteer)
+                .Where(t => t.Status != "Done")
                 .ToList();
             return View(assignments);
         }
@@ -89,8 +90,12 @@ namespace VolunteerManagementSystem.Controllers
             var assignment = _context.TaskAssignments.Find(id);
             if (assignment != null)
             {
+                bool wasDone = assignment.Status == "Done";
                 _context.TaskAssignments.Remove(assignment);
                 _context.SaveChanges();
+                TempData["SuccessMessage"] = "Task assignment deleted successfully.";
+                if (wasDone)
+                    return RedirectToAction("Done");
             }
             return RedirectToAction(nameof(Index));
         }
@@ -108,33 +113,9 @@ namespace VolunteerManagementSystem.Controllers
             if (assignment != null)
             {
                 assignment.Status = status;
-                assignment.IncidentReport.Status = status;
+                _context.Update(assignment);
                 _context.SaveChanges();
-
-                // Auto-reassign volunteer if task marked as done
-                if (status == "Done")
-                {
-                    var volunteer = assignment.Volunteer;
-                    var unassignedIncident = _context.IncidentReports
-                        .Where(ir => ir.Type.ToLower() == volunteer.volunteerType.ToLower() &&
-                            !_context.TaskAssignments.Any(t => t.IncidentReportId == ir.Id && (t.Status == "Pending" || t.Status == "In Progress")))
-                        .OrderBy(ir => ir.DateReported)
-                        .FirstOrDefault();
-
-                    if (unassignedIncident != null)
-                    {
-                        var newAssignment = new TaskAssignment
-                        {
-                            IncidentReportId = unassignedIncident.Id,
-                            VolunteerId = volunteer.Id,
-                            TaskDescription = $"Assigned to incident: {unassignedIncident.Title}",
-                            Status = "Pending",
-                            AssignedDate = DateTime.Now
-                        };
-                        _context.TaskAssignments.Add(newAssignment);
-                        _context.SaveChanges();
-                    }
-                }
+                TempData["SuccessMessage"] = "Task status updated successfully.";
             }
 
             return RedirectToAction(nameof(Index));

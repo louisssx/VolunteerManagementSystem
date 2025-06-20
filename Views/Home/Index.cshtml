@@ -1,6 +1,7 @@
 ﻿@{
     // Set the page title for the browser tab
     ViewData["Title"] = "Home";
+    var adminName = User.Identity?.Name ?? "Admin Name";
 }
 
 <div class="container py-4">

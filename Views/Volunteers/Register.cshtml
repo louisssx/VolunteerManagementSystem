@@ -20,34 +20,43 @@
                 <!-- Card body with registration form -->
                 <div class="card-body p-4" style="background: #f8fafc; border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;">
                     <form asp-action="Register">
+                        <!-- Validation summary for model-level errors -->
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                        
                         <div class="row g-3">
 
                             <!-- Personal Information Section -->
                             <div class="col-md-4">
                                 <label asp-for="firstName" class="form-label">First Name</label>
                                 <input asp-for="firstName" class="form-control form-control-lg" />
+                                <span asp-validation-for="firstName" class="text-danger"></span>
                             </div>
                             <div class="col-md-4">
                                 <label asp-for="middleName" class="form-label">Middle Name</label>
                                 <input asp-for="middleName" class="form-control form-control-lg" />
+                                <span asp-validation-for="middleName" class="text-danger"></span>
                             </div>
                             <div class="col-md-4">
                                 <label asp-for="lastName" class="form-label">Last Name</label>
                                 <input asp-for="lastName" class="form-control form-control-lg" />
+                                <span asp-validation-for="lastName" class="text-danger"></span>
                             </div>
 
                             <!-- Contact Information Section -->
                             <div class="col-md-6">
                                 <label asp-for="email" class="form-label">Email</label>
                                 <input asp-for="email" class="form-control form-control-lg" />
+                                <span asp-validation-for="email" class="text-danger"></span>
                             </div>
                             <div class="col-md-6">
                                 <label asp-for="phoneNumber" class="form-label">Phone Number</label>
                                 <input asp-for="phoneNumber" class="form-control form-control-lg" />
+                                <span asp-validation-for="phoneNumber" class="text-danger"></span>
                             </div>
                             <div class="col-md-12">
                                 <label asp-for="address" class="form-label">Address</label>
                                 <input asp-for="address" class="form-control form-control-lg" />
+                                <span asp-validation-for="address" class="text-danger"></span>
                             </div>
 
                             <!-- Volunteer Details Section -->
@@ -61,10 +70,12 @@
                                     <option value="Community Support">Community Support</option>
                                     <option value="Other">Other</option>
                                 </select>
+                                <span asp-validation-for="volunteerType" class="text-danger"></span>
                             </div>
                             <div class="col-md-6">
                                 <label asp-for="volunteerSkills" class="form-label">Volunteer Skills</label>
                                 <input asp-for="volunteerSkills" class="form-control form-control-lg" />
+                                <span asp-validation-for="volunteerSkills" class="text-danger"></span>
                             </div>
                         </div>
 
@@ -77,4 +88,9 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
+
+<!-- Client-side validation scripts -->
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

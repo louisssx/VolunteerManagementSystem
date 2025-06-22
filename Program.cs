@@ -11,7 +11,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
-    options.SignIn.RequireConfirmedAccount = false;
+    options.SignIn.RequireConfirmedAccount = true;
 })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();

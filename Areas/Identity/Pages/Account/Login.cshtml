@@ -4,12 +4,20 @@
 @{
     ViewData["Title"] = "Log in"; <!-- Sets the page title -->
     var registered = HttpContext.Request.Query["registered"].ToString(); <!-- Gets 'registered' query parameter -->
+    var error = HttpContext.Request.Query["error"].ToString(); <!-- Gets 'error' query parameter -->
 }
 @if (!string.IsNullOrEmpty(registered) && registered == "true")
 {
     <!-- Success alert if registration just occurred -->
     <div class="alert alert-success text-center" role="alert">
         Registration successful! Please log in with your new admin account.
+    </div>
+}
+@if (!string.IsNullOrEmpty(error))
+{
+    <!-- Error alert if email confirmation failed -->
+    <div class="alert alert-danger text-center" role="alert">
+        @error
     </div>
 }
 @if (TempData["LogoutMessage"] != null)

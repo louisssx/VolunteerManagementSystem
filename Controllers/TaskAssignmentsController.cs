@@ -114,6 +114,14 @@ namespace VolunteerManagementSystem.Controllers
             {
                 assignment.Status = status;
                 _context.Update(assignment);
+
+                // If the task is marked as "Done", update the incident report status to "Done"
+                if (status == "Done" && assignment.IncidentReport != null)
+                {
+                    assignment.IncidentReport.Status = "Done";
+                    _context.Update(assignment.IncidentReport);
+                }
+
                 _context.SaveChanges();
                 TempData["SuccessMessage"] = "Task status updated successfully.";
             }

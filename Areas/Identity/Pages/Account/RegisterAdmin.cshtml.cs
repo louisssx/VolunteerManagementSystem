@@ -82,7 +82,7 @@ namespace VolunteerManagementSystem.Areas.Identity.Pages.Account
                 // Add the new user to the Admin role
                 await _userManager.AddToRoleAsync(user, "Admin");
 
-                // Simulate email confirmation by generating a confirmation link
+                // Generate email confirmation token and link
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var userId = user.Id;
                 var confirmUrl = Url.Page(
